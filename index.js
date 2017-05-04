@@ -1,4 +1,14 @@
-const _ = require('lodash')
+const fs = require('fs')
 
-_.assign({'a':1}, {'b':2}, {'c': 3});
-// → {'a': 1, 'b': 2, 'c': 3}
+console.log('Start reading a file...')
+
+fs.readFile('./tempfiles/testfile.txt', 'utf-8', function(err, content) {
+  if (err) {
+    console.log('error happened during reading the file')
+    return console.log(err)
+  }
+
+  console.log(content)
+})
+
+console.log('end of the file')

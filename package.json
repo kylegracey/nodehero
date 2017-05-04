@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/kylegracey/nodehero#readme",
   "dependencies": {
+    "async": "^2.4.0",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
