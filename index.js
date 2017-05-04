@@ -1,14 +1,37 @@
-const fs = require('fs')
+'use strict';
+var promiseCount = 0;
 
-console.log('Start reading a file...')
+function testPromise() {
+  let thisPromiseCount = ++promiseCount;
 
-fs.readFile('./tempfiles/testfile.txt', 'utf-8', function(err, content) {
-  if (err) {
-    console.log('error happened during reading the file')
-    return console.log(err)
-  }
+  let log = document.getElementByID('log');
+  log.insertAdjacentHTML('beforeend', thisPromiseCount + ') Started (<small>Sync code started</small><br/>)');
 
-  console.log(content)
-})
+  //We make a new promise: we promise a numeric count of this promise, starting from 1 (after waiting 3s)
+  let p1 = new Promise(
+    // The resolver function is called with the ability to resolve or reject the promise
+    (resolve, reject) => {
+      log.insertAdjacentHTML('beforeend', thisPromiseCount + ') Promise started(<small> Async code started</small>)<br/>');
+      //This is only an example to create asynchronism
+      window.setTimeout(function(){
+        // We fulfill the promise !
+        resolve(thisPromiseCount);
+      }, Math.random()*2000+1000);
+    }
+  );
 
-console.log('end of the file')
+  p1.then(
+    //Log the fulfillment value
+    function(val) {
+      log.insertAdjacentHTML('beforeend', val + ') promise fulfilled(<small>Async code terminated</small>)<br/>');
+    }
+  ).catch(
+    // Log the rejection reason
+    (reason) => {
+      console.log('Handle the rejected promise(' + reason + ') here.');
+    }
+  );
+
+  log.insertAdjacentHTML('beforeend', thisPromiseCount + ') Promise made (<small>Sync code terminated</small>)<br />');
+
+}
