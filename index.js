@@ -1,37 +1,15 @@
-'use strict';
-var promiseCount = 0;
+const express = require('express')
+const app = express()
+const port = 3000
 
-function testPromise() {
-  let thisPromiseCount = ++promiseCount;
+app.get('/', (req, res) => {
+  res.send('Hello from Express')
+})
 
-  let log = document.getElementByID('log');
-  log.insertAdjacentHTML('beforeend', thisPromiseCount + ') Started (<small>Sync code started</small><br/>)');
+app.listen(port, (err) => {
+  if (err) {
+    return console.log('something bad happened', err)
+  }
 
-  //We make a new promise: we promise a numeric count of this promise, starting from 1 (after waiting 3s)
-  let p1 = new Promise(
-    // The resolver function is called with the ability to resolve or reject the promise
-    (resolve, reject) => {
-      log.insertAdjacentHTML('beforeend', thisPromiseCount + ') Promise started(<small> Async code started</small>)<br/>');
-      //This is only an example to create asynchronism
-      window.setTimeout(function(){
-        // We fulfill the promise !
-        resolve(thisPromiseCount);
-      }, Math.random()*2000+1000);
-    }
-  );
-
-  p1.then(
-    //Log the fulfillment value
-    function(val) {
-      log.insertAdjacentHTML('beforeend', val + ') promise fulfilled(<small>Async code terminated</small>)<br/>');
-    }
-  ).catch(
-    // Log the rejection reason
-    (reason) => {
-      console.log('Handle the rejected promise(' + reason + ') here.');
-    }
-  );
-
-  log.insertAdjacentHTML('beforeend', thisPromiseCount + ') Promise made (<small>Sync code terminated</small>)<br />');
-
-}
+  console.log(`server is listening on ${port}`)
+})
